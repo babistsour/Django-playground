@@ -1,0 +1,168 @@
+{% load thumbnail static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Product List</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+  </head>
+  <body >
+    <h1>Products</h1>
+
+    <!-- Slider main container -->
+<div class="swiper">
+  <!-- Additional required wrapper -->
+  <div class="swiper-wrapper">
+    <!-- Slides -->
+     {% for product in products|slice:"15" %}
+      <div class="swiper-slide">
+        <div class="product-card">
+            <p><strong>{{ product.name }}</strong></p>
+            <div class="product-image-wrapper">
+
+                {% thumbnail product.image "340x440" format='WEBP' as im_webp %}
+                {% thumbnail product.image "340x440" format='JPEG' as im_jpeg %}
+                <picture>
+                    <source srcset="{{ im_webp.url }}" type="image/webp" />
+                    <source srcset="{{ im_jpeg.url }}" type="image/jpeg" />
+                    <img
+                        src="{{ im_jpeg.url }}"
+                        alt="{{ product.name }}"
+                        width="{{ im_jpeg.width }}"
+                        height="{{ im_jpeg.height }}"
+                        class="skeleton-placeholder"
+                        style="width:100%; object-fit:cover;  display: block;"
+                        {% if forloop.counter <= 3 %}loading="eager"{% else %}loading="lazy"{% endif %}
+
+                    />
+                </picture>
+                {% endthumbnail %}
+                {% endthumbnail %}
+
+                {% if product.second_image %}
+
+                {% thumbnail product.second_image "340x440" format='WEBP' as second_im_webp %}
+                {% thumbnail product.second_image "340x440" format='JPEG' as second_im_jpeg %}
+                <picture>
+                    <source srcset="{{ second_im_webp.url }}" type="image/webp" />
+                    <source srcset="{{ second_im_jpeg.url }}" type="image/jpeg" />
+                    <img
+                        src="{{ second_im_jpeg.url }}"
+                        alt="{{ product.name }}"
+                        width="{{ second_im_jpeg.width }}"
+                        height="{{ second_im_jpeg.height }}"
+                        class="skeleton-placeholder hover-image"
+                        style="width:100%; height:100%; object-fit:cover;  display: block;"
+                          {% if forloop.counter <= 3 %}loading="eager"{% else %}loading="lazy"{% endif %}
+
+                    />
+                </picture>
+                {% endthumbnail %}
+                {% endthumbnail %}
+                {% endif %}
+
+
+            </div>
+        </div>
+      </div>
+      {% endfor %}
+    ...
+  </div>
+
+
+  <!-- If we need navigation buttons -->
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+
+
+</div>
+
+
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; max-width:1200px; margin: 0 auto;">
+      {% for product in products %}
+      <div style="width: 100%;">
+        <p><strong>{{ product.name }}</strong></p>
+
+        <div class="product-image-wrapper">
+
+            {% thumbnail product.image "340x440" format='WEBP' as im_webp %}
+            {% thumbnail product.image "340x440" format='JPEG' as im_jpeg %}
+            <picture>
+                <source srcset="{{ im_webp.url }}" type="image/webp" />
+                <source srcset="{{ im_jpeg.url }}" type="image/jpeg" />
+                <img
+                    src="{{ im_jpeg.url }}"
+                    alt="{{ product.name }}"
+                    width="{{ im_jpeg.width }}"
+                    height="{{ im_jpeg.height }}"
+                    class="skeleton-placeholder"
+                    style="width:100%; object-fit:cover;  display: block;"
+                     {% if forloop.counter <= 4 %}loading="eager"{% else %}loading="lazy"{% endif %}
+                />
+            </picture>
+            {% endthumbnail %}
+            {% endthumbnail %}
+
+            {% if product.second_image %}
+
+            {% thumbnail product.second_image "340x440" format='WEBP' as second_im_webp %}
+            {% thumbnail product.second_image "340x440" format='JPEG' as second_im_jpeg %}
+            <picture>
+                <source srcset="{{ second_im_webp.url }}" type="image/webp" />
+                <source srcset="{{ second_im_jpeg.url }}" type="image/jpeg" />
+                <img
+                    src="{{ second_im_jpeg.url }}"
+                    alt="{{ product.name }}"
+                    width="{{ second_im_jpeg.width }}"
+                    height="{{ second_im_jpeg.height }}"
+                    class="skeleton-placeholder hover-image"
+                    style="width:100%; height:100%; object-fit:cover;  display: block;"
+                     {% if forloop.counter <= 4 %}loading="eager"{% else %}loading="lazy"{% endif %}
+                />
+            </picture>
+            {% endthumbnail %}
+            {% endthumbnail %}
+            {% endif %}
+
+
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div id="top-categories">
+      <ul class="mh-menu">
+          <li>
+            <a href="https://seventeencosmetics.com/el/catalogue/category/make-up/face/concealer_12/">Concealer</a>
+             <img src="{% static './images/concealer.jpg' %}" alt="My image" loading="lazy">
+          <li>
+            <a href="https://seventeencosmetics.com/el/catalogue/category/make-up/face/contour-highlight_11/">Contouring</a>
+            <img src="{% static './images/contouring.jpg' %}" alt="My image" loading="lazy">
+          </li>
+
+          <li>
+            <a href="https://seventeencosmetics.com/el/catalogue/category/make-up/face/foundation_8/">Foundation</a>
+            <img src="{% static './images/concealer.jpg' %}" alt="My image" loading="lazy">
+          </li>
+
+          <li>
+            <a href="https://seventeencosmetics.com/el/catalogue/category/make-up/lips/lipstick_13/">Lipstick</a>
+            <img src="{% static './images/contouring.jpg' %}" alt="My image" loading="lazy">
+          </li>
+
+          <li>
+            <a href="https://seventeencosmetics.com/el/catalogue/category/make-up/eyes/mascara_16/">Mascara</a>
+            <img src="{% static './images/concealer.jpg' %}" alt="My image" loading="lazy">
+          </li>
+
+      </ul>
+    </div>
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="{% static 'js/app.js' %}" type="module"></script>
+  </body>
+</html>

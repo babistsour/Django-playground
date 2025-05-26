@@ -1,0 +1,19 @@
+{% load thumbnail %}
+
+{% thumbnail image size format='WEBP' as img_webp %}
+{% thumbnail image size format='JPEG' as img_jpeg %}
+<picture>
+    <source srcset="{{ img_webp.url }}" type="image/webp" />
+    <source srcset="{{ img_jpeg.url }}" type="image/jpeg" />
+    <img
+        src="{{ img_jpeg.url }}"
+        alt="{{ alt|default:'' }}"
+        width="{{ img_jpeg.width }}"
+        height="{{ img_jpeg.height }}"
+        style="{{ style|default:'width:100%; object-fit:cover; display:block;' }}"
+        class="{{ class|default:'skeleton-placeholder' }}"
+        loading="{{ loading|default:'lazy' }}"
+    />
+</picture>
+{% endthumbnail %}
+{% endthumbnail %}

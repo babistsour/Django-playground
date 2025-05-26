@@ -10,8 +10,21 @@
   <body >
     <h1>Products</h1>
 
+    <div class="category-filter">
+      <h2>Categories</h2>
+      <ul style="display: flex; gap: 10px; flex-wrap: wrap; list-style: none; padding: 0;">
+        {% for category in categories %}
+          <li>
+            <a href="?category={{ category.id }}" style="padding: 6px 12px; background: #eee; border-radius: 4px; text-decoration: none;">
+              {{ category.name }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
     <!-- Slider main container -->
-<div class="swiper">
+{% comment %} <div class="swiper">
   <!-- Additional required wrapper -->
   <div class="swiper-wrapper">
     <!-- Slides -->
@@ -76,56 +89,23 @@
   <div class="swiper-button-next"></div>
 
 
-</div>
+</div> {% endcomment %}
 
 
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; max-width:1200px; margin: 0 auto;">
       {% for product in products %}
       <div style="width: 100%;">
         <p><strong>{{ product.name }}</strong></p>
+        {% for category in product.categories.all  %}
+        {{ category.name }}
+        {% empty %}
+        {% endfor %}
 
         <div class="product-image-wrapper">
-
-            {% thumbnail product.image "340x440" format='WEBP' as im_webp %}
-            {% thumbnail product.image "340x440" format='JPEG' as im_jpeg %}
-            <picture>
-                <source srcset="{{ im_webp.url }}" type="image/webp" />
-                <source srcset="{{ im_jpeg.url }}" type="image/jpeg" />
-                <img
-                    src="{{ im_jpeg.url }}"
-                    alt="{{ product.name }}"
-                    width="{{ im_jpeg.width }}"
-                    height="{{ im_jpeg.height }}"
-                    class="skeleton-placeholder"
-                    style="width:100%; object-fit:cover;  display: block;"
-                     {% if forloop.counter <= 4 %}loading="eager"{% else %}loading="lazy"{% endif %}
-                />
-            </picture>
-            {% endthumbnail %}
-            {% endthumbnail %}
-
-            {% if product.second_image %}
-
-            {% thumbnail product.second_image "340x440" format='WEBP' as second_im_webp %}
-            {% thumbnail product.second_image "340x440" format='JPEG' as second_im_jpeg %}
-            <picture>
-                <source srcset="{{ second_im_webp.url }}" type="image/webp" />
-                <source srcset="{{ second_im_jpeg.url }}" type="image/jpeg" />
-                <img
-                    src="{{ second_im_jpeg.url }}"
-                    alt="{{ product.name }}"
-                    width="{{ second_im_jpeg.width }}"
-                    height="{{ second_im_jpeg.height }}"
-                    class="skeleton-placeholder hover-image"
-                    style="width:100%; height:100%; object-fit:cover;  display: block;"
-                     {% if forloop.counter <= 4 %}loading="eager"{% else %}loading="lazy"{% endif %}
-                />
-            </picture>
-            {% endthumbnail %}
-            {% endthumbnail %}
-            {% endif %}
-
-
+          {% include 'includes/picture.html' with image=product.image alt=product.name size="340x440" %}
+          {% if product.second_image %}
+          {% include 'includes/picture.html' with image=product.second_image class="hover-image" alt=product.name size="340x440" %}
+          {% endif %}
         </div>
       </div>
       {% endfor %}
